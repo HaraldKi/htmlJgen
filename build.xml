@@ -13,7 +13,7 @@
   </path>
 
   <target name="setup">
-    <mkdir dir="src/java"/>
+    <mkdir dir="build/classes"/>
   </target>
   
   <target name="compile" depends="setup">
@@ -40,6 +40,11 @@
     </javadoc>
   </target>
     
+  <target name="jar" depends="clean, compile">
+    <jar destfile="build/${ant.project.name}-${version}.jar">
+      <fileset dir="build/classes"/>
+    </jar>
+  </target>
   <target name="clean">
     <delete dir="build"/>
   </target>
