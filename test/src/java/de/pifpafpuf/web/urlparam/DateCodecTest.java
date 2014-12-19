@@ -10,7 +10,6 @@ import java.util.TimeZone;
 import org.junit.Test;
 
 import de.pifpafpuf.web.urlparam.DateCodec;
-import de.pifpafpuf.web.urlparam.StringCodec;
 
 public class DateCodecTest {
 

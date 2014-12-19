@@ -5,17 +5,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.TimeZone;
-
 import org.junit.Test;
 
 import de.pifpafpuf.web.urlparam.BooleanCodec;
 import de.pifpafpuf.web.urlparam.EnumCodec;
 import de.pifpafpuf.web.urlparam.IntegerCodec;
-import de.pifpafpuf.web.urlparam.IsoDateCodec;
-import de.pifpafpuf.web.util.DayRange;
 
 public class CodecTest {
   private static enum Num {
@@ -64,29 +58,5 @@ public class CodecTest {
     }
   }
   
-  @Test
-  public void IsoDateTest() {
-    TimeZone tz = TimeZone.getTimeZone("GMT+01:00");
-    //System.out.println(tz);
-    DayRange range = new DayRange(20130101, 20130331);
-    IsoDateCodec codec = new IsoDateCodec(tz, Locale.ROOT, range);
-    assertNull(codec.get("20120101"));
-    assertNull(codec.get("abcdefg"));
-    
-    Calendar cal = codec.get("20130104");
-    Calendar expected = Calendar.getInstance(tz);
-    expected.set(2013, 0, 4, 0, 0, 0);
-    expected.set(Calendar.MILLISECOND, 0); 
-    assertEquals(expected.getTimeInMillis(), cal.getTimeInMillis());
-    
-    
-    String encoded = codec.asString(expected);
-    assertEquals("20130104", encoded);
-    
-    cal = codec.fromDayRep(20130630);
-    assertEquals(2013, cal.get(Calendar.YEAR));
-    assertEquals(6, cal.get(Calendar.MONTH)+1);
-    assertEquals(30, cal.get(Calendar.DATE));    
-  }
 
 }

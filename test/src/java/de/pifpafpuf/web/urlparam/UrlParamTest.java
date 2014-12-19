@@ -91,10 +91,4 @@ public class UrlParamTest {
     p = p.fromString("12");
     assertEquals("12", p.getForInputParam());    
   }
-  @Test 
-  public void encodeTest() {
-    UrlParam<Integer> p = 
-        new UrlParam<Integer> ("bla", null, IntegerCodec.INSTANCE);
-    
-  }
 }
