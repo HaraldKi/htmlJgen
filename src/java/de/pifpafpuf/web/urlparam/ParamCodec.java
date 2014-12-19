@@ -9,18 +9,18 @@ package de.pifpafpuf.web.urlparam;
  */
 public interface ParamCodec<E> {
   /**
-   * converts the value into a String such that the {@code #get} method is able
+   * converts the value into a String such that the {@link #get} method is able
    * to convert it back.
    * 
-   * @return may never be {@code null}. If {@code e==null} and the coder cannot
+   * @return may never be {@code null}. If {@code e==null} and the we cannot
    *         convert it to a string that the decoder makes into {@code null}
-   *         again, throw NullPointerException.
+   *         again, throw <code>NullPointerException</code>.
    */
   String asString(E e);
 
   /**
    * decodes the String into a value.
-   * @return {@code null} if the String cannot be properly decoded. 
+   * @return {@code null} if the string cannot be properly decoded. 
    */
   E get(String value);
 }

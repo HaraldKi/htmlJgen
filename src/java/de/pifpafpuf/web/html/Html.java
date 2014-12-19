@@ -106,7 +106,7 @@ public class Html extends EmptyElem {
   }
   /*+******************************************************************/
   /**
-   * convenience method combining {@link #add(Html)} and {@link #setTight}
+   * convenience method combining {@link #add(String)} and {@link #setTight}
    * for the generated child element.
    * 
    * @param tagname is the name of the generated child element

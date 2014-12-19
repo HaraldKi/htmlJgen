@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="htmlJgen" default="jar">
+
+  <!-- 
+       Currently you need to manually get a servlet-api-3*.jar 
+       somewhere to compile copy it into libs/build. For example from here:
+       http://central.maven.org/maven2/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar
+  -->
+  <property name="version" value="1.0.0"/>
+
+  <path id="compile-classpath">
+    <fileset dir="libs/build" includes="**/*.jar"/>
+  </path>
+
+  <target name="setup">
+    <mkdir dir="src/java"/>
+  </target>
+  
+  <target name="compile" depends="setup">
+    <javac srcdir="src/java"
+           destdir="build/classes"
+           classpathref="compile-classpath"
+           debug="true"
+           debuglevel="vars,lines,source"
+           includeAntRuntime="false"
+           encoding="UTF-8" />
+
+  </target>
+  
+  <target name="javadoc">
+    <javadoc sourcepath="src/java"
+             destdir="build/javadoc"
+             packagenames="de.*"
+             Windowtitle="htmlJgen"
+             Header="version ${version}">
+      <link href="http://docs.oracle.com/javase/7/docs/api/"
+            packageListURL="http://docs.oracle.com/javase/7/docs/api/package-list"
+        />
+      <bottom>&lt;a target="github" href="https://github.com/HaraldKi/htmlJgen"&gt;Source code on github&lt;a&gt;</bottom>
+    </javadoc>
+  </target>
+    
+  <target name="clean">
+    <delete dir="build"/>
+  </target>
+
+</project>

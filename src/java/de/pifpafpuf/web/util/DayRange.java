@@ -5,7 +5,10 @@ package de.pifpafpuf.web.util;
  * 
  * FIXME: The day encoding is idiosyncratic and should be changed to
  * something that can be better verified to be correct.
+ * 
+ * @deprecated only used by deprecated IsoDateCodec
  */
+@Deprecated
 public class DayRange {
   public final int dayMax;
   public final int dayMin;

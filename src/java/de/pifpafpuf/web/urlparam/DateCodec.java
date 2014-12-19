@@ -19,7 +19,7 @@ public class DateCodec implements ParamCodec<Long> {
    * times. The result will differ up to 24*3600*1000 milliseconds from what you
    * expect, if you leave the time zone arbitrary.
    * 
-   * @param format
+   * @param df
    *          to be understood by {@link java.text.SimpleDateFormat}
    */
   public DateCodec(DateFormat df) {    
@@ -30,7 +30,7 @@ public class DateCodec implements ParamCodec<Long> {
    * creates a codec for the given format that, when decoding, only applies, if
    * the resulting time stamp is in the closed interval given
    * 
-   * @param format
+   * @param df
    *          to be understood by {@link java.text.SimpleDateFormat}
    * @param minStamp is the minimum allowed value for a parsed date
    * @param maxStamp is the maximum  allowed value for a parsed date

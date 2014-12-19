@@ -11,10 +11,10 @@ import java.util.TimeZone;
 import de.pifpafpuf.web.util.DayRange;
 
 /**
- * is a codec for dates of the form yyyyMMdd restricted by a @{link
+ * is a codec for dates of the form yyyyMMdd restricted by a {@link
  * DayRange}.
  * 
- * @deprecated this is idiosyncratic remains for a project that uses it. Use
+ * @deprecated this is a leftover for a project that uses it. Use
  *             {@link DateCodec} instead.
  */
 @Deprecated
