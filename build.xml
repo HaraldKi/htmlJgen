@@ -30,6 +30,7 @@
   <target name="javadoc">
     <javadoc sourcepath="src/java"
              destdir="build/javadoc"
+	     classpathref="compile-classpath"
              packagenames="de.*"
              Windowtitle="htmlJgen"
              Header="version ${version}">
@@ -47,6 +48,12 @@
   </target>
   <target name="clean">
     <delete dir="build"/>
+  </target>
+
+  <target name="ivy" xmlns:ivy="antlib:org.apache.ivy.ant">
+    <ivy:configure settingsId="ivyconf" file="./ivysettings.xml"/>
+    <ivy:resolve />
+    <ivy:retrieve pattern="libs/build/[artifact]-[revision].[ext]" />
   </target>
 
 </project>

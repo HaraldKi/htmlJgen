@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module 
+  version="2.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns:e="http://ant.apache.org/ivy/extra"
+  xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+  
+  <info organisation="x" module="htmlJgen" revision="1.0.0"/>
+  <dependencies>
+    <dependency org="tomcat" name="servlet-api" rev="5.+"/>
+  </dependencies>
+</ivy-module>
