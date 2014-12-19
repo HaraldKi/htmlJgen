@@ -5,7 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * is a node in an HTML DOM tree intended for HTML code generation.
+ * is a node in an HTML DOM tree intended for HTML code generation. It always
+ * generates a close tag.
  */
 public class Html extends EmptyElem {
   private final List<Stringable> children;

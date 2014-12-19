@@ -29,7 +29,7 @@
   
   <target name="javadoc">
     <javadoc sourcepath="src/java"
-             destdir="build/javadoc"
+             destdir="build/${ant.project.name}-javadoc-${version}"
 	     classpathref="compile-classpath"
              packagenames="de.*"
              Windowtitle="htmlJgen"
@@ -48,6 +48,15 @@
   </target>
   <target name="clean">
     <delete dir="build"/>
+  </target>
+  <target name="docjar" depends="javadoc">
+    <jar destfile="build/${ant.project.name}-javadoc-${version}.jar">
+      <fileset dir="build" 
+               includes="${ant.project.name}-javadoc-${version}/**"/>
+    </jar>
+  </target>
+
+  <target name="package" depends="jar, docjar">
   </target>
 
   <target name="ivy" xmlns:ivy="antlib:org.apache.ivy.ant">
