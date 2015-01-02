@@ -27,7 +27,9 @@ a[name]:hover {
     color:#353833;
 }
 pre {
-  font-size: 110%;
+  color: #333;
+  margin-left: 2ex;
+  /* font-size: 110%; */
 }
 h1 {
     font-size:180%;
