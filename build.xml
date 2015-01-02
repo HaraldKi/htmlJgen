@@ -32,6 +32,7 @@
              destdir="build/${ant.project.name}-javadoc-${version}"
 	     classpathref="compile-classpath"
              packagenames="de.*"
+             Use="true"
              stylesheetfile="src/style.css"
              Windowtitle="htmlJgen"
              Header="version ${version}">
