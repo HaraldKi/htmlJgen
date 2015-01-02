@@ -28,7 +28,7 @@ public class HtmlText implements Stringable {
   /*+******************************************************************/
   private HtmlText(String text, boolean isEncoded) {
     if (text==null) {
-      throw new NullPointerException("parameter text may not be null");
+      throw new IllegalArgumentException("parameter text may not be null");
     }
     this.text = text;
     this.isEncoded = isEncoded;

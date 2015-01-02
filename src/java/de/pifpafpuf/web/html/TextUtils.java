@@ -2,16 +2,15 @@ package de.pifpafpuf.web.html;
 
 import java.io.IOException;
 /**
- * asserted utilities needed for generating HTML.
+ * assorted utilities needed for generating HTML.
  */
 public class TextUtils {
-  ///CLOVER:OFF
   private TextUtils() {}
-  ///CLOVER:ON
+
   /**
    * encode characters such that they can be used inside HTML text as well as
    * inside an element's attribute. In particular the characters @{code
-   * "'&<>} and everything below ascii space is converted to an encoded
+   * "'&<>} and everything below ASCII space is converted to an encoded
    * character entity.
    * 
    * @throws IOException only thrown if the appending to @{code out} throws.
@@ -52,10 +51,8 @@ public class TextUtils {
     try {
       thing.print(sb, 0);
     } catch( IOException eNever ) {
-      ///CLOVER:OFF
       String msg = "how can append to StringBuilder throw IOException?";
       throw new RuntimeException(msg, eNever);
-      ///CLOVER:ON
     }
     return sb.toString();
   }
