@@ -10,9 +10,24 @@ import javax.servlet.ServletRequest;
  * of this class are immutable, but may be used as builders for objects for
  * the same {@code TYPE} but with another value. Objects of this type are
  * used to fetch parameters from the {@link javax.servlet.ServletRequest} as
- * well as to write the parameter with its value into a URL or a HTML form
+ * well as to write the parameter with its value into a URL or an HTML form
  * element.</p>
- * 
+ * <p>Example use of an <code>int</code> parameter.</p>
+ * <pre> // define the template
+ * private static final UrlParam<Integer> P_COUNT =
+ *    new UrlParam<Integer>("count", 0, new IntegerCodec(0, 10));
+ * ...
+ * // read the value from the request, using the default if necessary
+ * int count = P_COUNT.getFirst(request).getValue();
+ * ...
+ * // create a new parameter value to put it into the response
+ * UrlParam<Integer> newCount = P_COUNT.fromValue(9);
+ * newCount.appendToUrl(buf);
+ * ...
+ * new Html("input").setAttr("type", "text")
+ * .setAttr("name", newCount.getName())
+ * .setAttr("value", newCount.getForInputParam()));
+ * </pre.
  * @param <TYPE> is the type of the parameter stored.
  */
 public class UrlParam<TYPE> {
@@ -25,12 +40,19 @@ public class UrlParam<TYPE> {
    * supposed to be used as templates. They shall be used to create new
    * <code>UlrParam</code> objects either with {@link #fromValue} or with
    * {@link #fromFirst}.
-   * 
-   * @param name of the parameter use in the URL.
-   * @param value is the default value, may be {@code null}
+   *
+   * @param name of the parameter as used in the URL. No check is made
+   *        whether the name conforms to the syntax rules of URL parameter
+   *        names and no encoding/decoding is performed for the name.
+   * @param value is the default value for this parameter and may be
+   *        {@code null} to signal the complete absence of a the parameter.
+   *        (Advice: Don't use <code>null</code>, rather use a good default
+   *        value if at all possible.)
    * @param pp is the codec to decode strings retrieved from
    *        {@link javax.servlet.ServletRequest} and to encode the value for
-   *        a URL or an HTML form input element.
+   *        a URL or an HTML form input element. The codec should only
+   *        encode/decode to/from an arbitrary <code>String</code> URL
+   *        en/decoding is taken care of separately.
    */
   public UrlParam(String name, TYPE value, ParamCodec<TYPE> pp) {
     if (name==null) {
@@ -48,24 +70,35 @@ public class UrlParam<TYPE> {
     return name;
   }
   /*+******************************************************************/
+  /**
+   * returns the value, which may be <code>null</code> if it was so set in
+   * the constructor.
+   * 
+   */
   public TYPE getValue() {
     return value;
   }
   /*+**********************************************************************/
+  /**
+   * returns the value encoded in string form by the codec defined in the
+   * constructor. No HTML or URL encoding is performed.
+   * 
+   */
   public String getForInputParam() {
     return paramCodec.asString(value);
   }
   /*+**********************************************************************/
   /**
    * returns the value of <code>this</code> after first encoding it with our
-   * coded and then URL-encoding it.
+   * codec and then URL-encoding it.
    */
   public String getForUrlParam() {
     return encodeForUrl(paramCodec.asString(value));
   }
   /*+**********************************************************************/
   /**
-   * returns a new url parameter with the given new value.
+   * returns a new url parameter with the given new value, but the the same
+   * name and codec.
    */
   public UrlParam<TYPE> fromValue(TYPE newValue) {
     return new UrlParam<TYPE>(name, newValue, paramCodec);
@@ -83,12 +116,12 @@ public class UrlParam<TYPE> {
     }
     sb.append(name).append('=').append(getForUrlParam());
   }
-  /*+******************************************************************/  
+  /*+******************************************************************/
   /**
    * creates a new <code>UrlParam</code> from the given text. If the text is
    * <code>null</code> or cannot be parsed by the codec, <code>this</code> is
    * returned.
-   * 
+   *
    * @param text to be converted to a <code>UrlParam</code>, may be
    *        <code>null</code>
    * @return a new object or <code>this</code>
@@ -101,15 +134,13 @@ public class UrlParam<TYPE> {
       return fromValue(v);
     }
   }
-  /*+******************************************************************/ 
+  /*+******************************************************************/
   /**
    * <p>
    * creates a new <code>UrlParam</code> from the value returned by
-   * <code>req.getParameter</code>. If the parameter does not exist or can
-   * not be parsed by the codec, the default value of <code>this</code> is
-   * used to initialize the new object.
+   * <code>req.getParameter</code> by calling {@link #fromString}.
    * </p>
-   * 
+   *
    * @param req where to get the parameter value from, may not be
    *        <code>null</code>
    */
@@ -117,7 +148,7 @@ public class UrlParam<TYPE> {
     String text = req.getParameter(name);
     return fromString(text);
   }
-  /*+******************************************************************/  
+  /*+******************************************************************/
   private static String encodeForUrl(String text) {
     try {
       return URLEncoder.encode(text, "UTF-8");
@@ -158,11 +189,11 @@ public class UrlParam<TYPE> {
     if (!paramCodec.equals(other.paramCodec)) {
       return false;
     }
-    
+
     if( value==null ) {
       return other.value==null;
-    } 
-    
+    }
+
     return value.equals(other.value);
   }
   /*+******************************************************************/
