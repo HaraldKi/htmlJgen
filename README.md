@@ -15,7 +15,7 @@ is easy to understand. It is a way to have dynamic content inside
 a static HTML page. To avoid the CPU cost of interpreting a
 template language, JSP is compiled into Java classes.
 
-But the HTML/JSP I work with is 95% or more JSP, sprinkled with the
+But the HTML/JSP I work with contains 95% or more JSP tags, sprinkled with the
 odd original &lt;div> here and there. In the worst case there are
 scriptlets of pure Java contained, but it has nothing to do anymore
 with "mostly HTML".
