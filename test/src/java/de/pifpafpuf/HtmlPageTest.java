@@ -60,4 +60,14 @@ public class HtmlPageTest {
     String expected = "<body>\n    "+content+"\n  </body>";
     assertThat(text, containsString(expected));
   }
+  @Test
+  public void pageAddMetaTest() {
+    HtmlPage page = new HtmlPage("bla");
+    page.addMeta("content-type", "text-html");
+    String text = page.toString();
+    assertThat(text, containsString("<meta "));
+    assertThat(text, containsString("name=\"content-type\""));
+    assertThat(text, containsString("content=\"text-html\""));
+  }
+                                 
 }

@@ -4,7 +4,7 @@ import java.io.IOException;
 /**
  * assorted utilities needed for generating HTML.
  */
-public class TextUtils {
+class TextUtils {
   private TextUtils() {}
 
   /**

@@ -25,7 +25,7 @@ public class HtmlTest {
     String expected = "<div class=\"x&quot;x\">&lt;hallo&gt;</div>";
     assertEquals(expected, html);
   }
-  @Test 
+  @Test
   public void untightTest() {
     Html div = new Html("div").addText("bla");
     String expected = "<div>\n  bla\n</div>";
@@ -75,7 +75,7 @@ public class HtmlTest {
       HtmlText.fromRaw(null);
       fail("we should have seen an NPE, but got here instead");
     } catch (Throwable e) {
-      assertEquals(NullPointerException.class, e.getClass());
+      assertEquals(IllegalArgumentException.class, e.getClass());
     }
   }
   @Test
@@ -84,11 +84,18 @@ public class HtmlTest {
     String expected = "<div>a&#39;a b&amp;b c&#10;c</div>";
     assertEquals(expected, div.toString());
   }
-  
-  @Test 
+
+  @Test
   public void getAttrTest() {
     EmptyElem l = new Html("link").setAttr("bla", "falsel");
     assertEquals("default", l.getAttr("zxx", "default"));
     assertEquals("falsel", l.getAttr("bla", null));
+  }
+  @Test
+  public void addEmptyTest() {
+    Html div = new Html("div");
+    div.addEmpty("braller");
+    String expected = "<div>\n  <braller>\n</div>";
+    assertEquals(expected, div.toString());
   }
 }

@@ -2,11 +2,19 @@
 <project name="htmlJgen" default="jar">
 
   <!-- 
-       Currently you need to manually get a servlet-api-3*.jar 
-       somewhere to compile copy it into libs/build. For example from here:
+       Run 'ant ivy' first to download dependencies.
+
+       If you don't ave ivy, you need to manually get a servlet-api-3*.jar 
+       somewhere to compile. Copy it into libs/build. For example from here:
        http://central.maven.org/maven2/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar
   -->
-  <property name="version" value="1.1.1"/>
+
+  <!-- set cobertura.libdir in your .ant.properties file -->
+  <loadproperties srcFile="${user.home}/.ant.properties"/>
+  <include file="src/ant-macros/cobertura.xml"/>
+  <include file="src/ant-macros/javac.xml"/>
+
+  <property name="version" value="1.1.2"/>
 
   <path id="compile-classpath">
     <fileset dir="libs/build" includes="**/*.jar"/>
@@ -17,19 +25,52 @@
   </target>
   
   <target name="compile" depends="setup">
-    <javac srcdir="src/java"
-           destdir="build/classes"
-           classpathref="compile-classpath"
-           debug="true"
-           debuglevel="vars,lines,source"
-           includeAntRuntime="false"
-           encoding="UTF-8" />
-
+    <do-compile srcdir="src/java"
+                dstdir="build/classes"
+                classpathref="compile-classpath" />
   </target>
-  
+
+  <target name="compile-tests">
+    <path id="test-cp">
+      <fileset dir="libs/build" includes="*.jar"/>
+      <pathelement path="build/classes"/>
+    </path>
+    <do-compile srcdir="test/src/java" 
+                dstdir="build/test/classes"
+                classpathref="test-cp"/>
+  </target>
+
+  <target name="test-coverage" depends="compile, compile-tests">
+    <do-cobertura-init cobertura.libdir="${cobertura.libdir}"/>
+    <do-cobertura-instrument/>
+    <delete dir="build/junit"/>
+    <mkdir dir="build/junit"/>
+    <junit fork="yes">
+      <sysproperty key="net.sourceforge.cobertura.datafile"
+                   value="${cobertura.data}"/>
+      <classpath>
+        <pathelement location="build/cobertura/classes"/>
+        <pathelement location="build/classes"/>
+        <pathelement location="build/test/classes"/>
+        <path refid="cobertura.classpath"/>
+        <fileset dir="libs/build" includes="*.jar"/>
+      </classpath>
+      <formatter type="xml" usefile="true" />
+      <formatter type="plain" usefile="false"/>
+      <batchtest fork="yes" todir="build/junit">
+        <fileset dir="test/src/java" includes="**/*Test.java"/>
+      </batchtest>
+    </junit>
+    <cobertura-report datafile="${cobertura.data}"
+                      destdir="build/coverage-report"
+                      srcdir="src/java"
+                      />
+    
+  </target>
+
   <target name="javadoc">
     <javadoc sourcepath="src/java"
-             destdir="build/${ant.project.name}-javadoc-${version}"
+             destdir="build/${ant.project.name}-javadoc"
 	     classpathref="compile-classpath"
              packagenames="de.*"
              Use="true"
@@ -49,17 +90,19 @@
       <fileset dir="build/classes"/>
     </jar>
   </target>
+
   <target name="clean">
     <delete dir="build"/>
   </target>
+
   <target name="docjar" depends="javadoc">
     <jar destfile="build/${ant.project.name}-javadoc-${version}.jar">
-      <fileset dir="build" 
-               includes="${ant.project.name}-javadoc-${version}/**"/>
+      <zipfileset dir="build/${ant.project.name}-javadoc/"
+               prefix="${ant.project.name}-javadoc-${version}"/>
     </jar>
   </target>
 
-  <target name="package" depends="jar, docjar">
+  <target name="package" depends="jar, docjar, test-coverage">
   </target>
 
   <target name="ivy" xmlns:ivy="antlib:org.apache.ivy.ant">

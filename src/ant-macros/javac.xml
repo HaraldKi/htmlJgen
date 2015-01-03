@@ -1,0 +1,22 @@
+<project>
+  <macrodef name="do-compile">
+    <attribute name="srcdir"/>
+    <attribute name="dstdir"/>
+    <attribute name="classpathref"/>
+    <sequential>
+      <mkdir dir="@{dstdir}"/>
+      <javac source="1.7" target="1.7"
+             srcdir="@{srcdir}"
+             destdir="@{dstdir}"
+             classpathref="@{classpathref}"
+             debug="true"
+             includeantruntime="false"
+             deprecation="true">
+        <patternset includes="**/*.java"
+                    excludes="**/package-info.java"/>
+        <compilerarg line="-Xmaxerrs 10"/>
+        <compilerarg line="-Xmaxwarns 10"/>
+      </javac>
+    </sequential>
+  </macrodef>
+</project>

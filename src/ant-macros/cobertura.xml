@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+
+  <macrodef name="do-cobertura-init">
+    <!-- only really tested with cobertura-2.+ -->
+    <attribute name="cobertura.libdir"/>
+    <sequential>
+      <path id="cobertura.classpath">
+        <fileset dir="@{cobertura.libdir}">
+          <include name="cobertura-2.0.3.jar" />
+          <include name="lib/**/*.jar" />
+        </fileset>
+      </path>
+      <taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+    </sequential>
+  </macrodef>
+
+  <macrodef name="do-cobertura-instrument">
+    <sequential>
+      <delete dir="build/cobertura"/>
+      <property name="cobertura.data" value="build/cobertura.ser"/>
+      <delete file="${cobertura.data}"/>
+      <cobertura-instrument todir="build/cobertura/classes"
+                            datafile="${cobertura.data}">
+        <fileset dir="build/classes" 
+               includes="**/*.class" 
+               excludes="**/test/*.class" />
+        <!-- auxClasspath path="WEB-INF/lib/jooq-3.4.4.jar"/ -->
+      </cobertura-instrument>
+    </sequential>
+  </macrodef>
+
+</project>
