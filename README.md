@@ -1,5 +1,5 @@
-htmlJgen
-========
+htmlJgen --- HTML generation from plain Java
+================================================
 
 Create a simple DOM tree for HTML with Java
 
