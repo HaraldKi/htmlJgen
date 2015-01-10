@@ -2,6 +2,8 @@ package de.pifpafpuf.web.urlparam;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletRequest;
 
@@ -147,6 +149,28 @@ public class UrlParam<TYPE> {
   public UrlParam<TYPE> fromFirst(ServletRequest req) {
     String text = req.getParameter(name);
     return fromString(text);
+  }
+  /*+******************************************************************/
+  /**
+   * <p>
+   * creates a list of <code>UrlParam</code> from all values returned by
+   * <code>req.getParameterValues()</code> by calling {@link #fromString} for
+   * each of them. If parameter does not exist or
+   * <code>getParameterValues</code> returns an empty array (no idea whether
+   * this may happen at all), a list of length zero is returned.</p>
+   * 
+   */
+  public List<UrlParam<TYPE>> fromAll(ServletRequest req) {
+    String[] values = req.getParameterValues(name);
+    if (values==null) {
+      return new ArrayList<UrlParam<TYPE>>(0);
+    }
+    List<UrlParam<TYPE>> result = new ArrayList<UrlParam<TYPE>>(values.length);
+    for(String v : values) {
+      result.add(fromString(v));
+    }
+  
+    return result;
   }
   /*+******************************************************************/
   private static String encodeForUrl(String text) {

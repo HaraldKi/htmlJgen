@@ -14,7 +14,7 @@
   <include file="src/ant-macros/cobertura.xml"/>
   <include file="src/ant-macros/javac.xml"/>
 
-  <property name="version" value="1.1.2"/>
+  <property name="version" value="1.2.0"/>
 
   <path id="compile-classpath">
     <fileset dir="libs/build" includes="**/*.jar"/>

@@ -1,14 +1,13 @@
 package de.pifpafpuf.web.urlparam;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.List;
 
 import org.junit.Test;
-
-import de.pifpafpuf.web.urlparam.BooleanCodec;
-import de.pifpafpuf.web.urlparam.EnumCodec;
-import de.pifpafpuf.web.urlparam.IntegerCodec;
-import de.pifpafpuf.web.urlparam.StringCodec;
-import de.pifpafpuf.web.urlparam.UrlParam;
 
 public class UrlParamTest {
   private enum E1 {eins, zwei;};
@@ -90,5 +89,40 @@ public class UrlParamTest {
     }
     p = p.fromString("12");
     assertEquals("12", p.getForInputParam());    
+  }
+  
+  @Test
+  public void UrlParamFirstTest() {
+    ServletRequestMock req = new ServletRequestMock();
+    UrlParam<Integer> p1 = 
+        new UrlParam<Integer>("dodo", 42, IntegerCodec.INSTANCE);
+    UrlParam<Integer> result = p1.fromFirst(req);
+    assertEquals(p1, result);
+    
+    req.setParameter("dodo", "one", "two", "three");
+    result = p1.fromFirst(req);
+    assertEquals(p1, result);
+
+    req.setParameter("dodo", "112");
+    result = p1.fromFirst(req);
+    assertEquals(Integer.valueOf(112), result.getValue());
+  }
+  @Test
+  public void UrlParamFirstAll() {
+    ServletRequestMock req = new ServletRequestMock();
+    UrlParam<Integer> p1 = 
+        new UrlParam<Integer>("dodo", 42, IntegerCodec.INSTANCE);
+    List<UrlParam<Integer>> result = p1.fromAll(req);
+    assertEquals(0, result.size());
+    
+    req.setParameter("dodo", "one", "two", "three");
+    result = p1.fromAll(req);
+    assertEquals(3, result.size());
+    assertEquals(p1, result.get(0));
+
+    req.setParameter("dodo", "112", "113");
+    result = p1.fromAll(req);
+    assertEquals(Integer.valueOf(112), result.get(0).getValue());
+    assertEquals(Integer.valueOf(113), result.get(1).getValue());
   }
 }
