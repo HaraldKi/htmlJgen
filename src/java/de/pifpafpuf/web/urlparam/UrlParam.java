@@ -159,7 +159,9 @@ public class UrlParam<TYPE> {
    * <code>getParameterValues</code> returns an empty array (no idea whether
    * this may happen at all), a list of length zero is returned.</p>
    * 
-   */
+   * @param req where to get the parameter values from, may not be
+   *        <code>null</code>
+  */
   public List<UrlParam<TYPE>> fromAll(ServletRequest req) {
     String[] values = req.getParameterValues(name);
     if (values==null) {
