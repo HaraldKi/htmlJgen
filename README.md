@@ -7,7 +7,7 @@ Also provides a way to handle servlet GET and POST parameters.
 
 See the current <a href="http://haraldki.github.io/htmlJgen/htmlJgen-javadoc/">javadoc</a> for more information.
 
-Test coverage reporting is also <a href="http://haraldki.github.io/htmlJgen/coverage-report/">available</a>.
+Test  <a href="http://haraldki.github.io/htmlJgen/coverage-report/">coverage reporting</a> is also available.
 
 ## Why that?
 
@@ -100,10 +100,10 @@ possibly catering for different HTML4, 4.01, 5 versions out
 there. Feel free to prepare a pull request.-)
 
 I even retracted the `EmptyElem.setClass(String classes)` method again
-despite the fact that `setAttr("class", "yada")` is the
-most frequently used call. But once you start with these convenience
-methods it is hard to stop. And any stop would be arbitrary, so kept it
-all clean and simple for now.
+despite the fact that `setAttr("class", "yada")` is the most
+frequently used call. But once you start with these convenience
+methods it is hard to stop. And any stop would be arbitrary, so I kept
+it all clean and simple for now.
 
 
 

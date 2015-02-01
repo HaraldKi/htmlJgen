@@ -1,6 +1,5 @@
 package de.pifpafpuf.web.html;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,9 +7,8 @@ import java.util.List;
  * is a node in an HTML DOM tree intended for HTML code generation. It always
  * generates a close tag.
  */
-public class Html extends EmptyElem {
+public final class Html extends FormattingHtml {
   private final List<Stringable> children;
-  private boolean tight = false;
   /*+******************************************************************/
   /**
    * creates an HTML element for the given {@code tagname}.
@@ -56,13 +54,6 @@ public class Html extends EmptyElem {
   }
   /*+******************************************************************/
   /**
-   * adds the given text as child element. 
-   */
-  public void add(HtmlText child) {
-    children.add(child);
-  }
-  /*+******************************************************************/
-  /**
    * adds a child element for the given {@code tagname} and returns it.
    * @param tagname name of the element to generate
    * @return the generated child element
@@ -76,7 +67,7 @@ public class Html extends EmptyElem {
   /**
    * adds the given child element
    */
-  public void add(EmptyElem child) {
+  public void add(Stringable child) {
     children.add(child);
   }
   /*+**********************************************************************/
@@ -87,15 +78,12 @@ public class Html extends EmptyElem {
   }
   /*+**********************************************************************/
   /**
-   * requests tight output of this HTML element. The children of this element
-   * are printed out inside the element's tags without any additional
-   * whitespace like line breaks and indentation. Tightness is inherited by
-   * all children.
+   * <p>calls {@link FormattingHtml#setTight} with {@code true}.</p>
    * 
    * @return {@code this}
    */
   public Html setTight() {
-    tight = true;
+    super.setTight(true);
     return this;
   }
   /*+******************************************************************/
@@ -119,27 +107,10 @@ public class Html extends EmptyElem {
     return child;
   }
   /*+******************************************************************/
-  @Override
-  public void print(Appendable out, int indent) throws IOException {
-    super.print(out, indent);
-    if (tight) {
-      indent = Integer.MIN_VALUE;
-    }
-    printChildren(out, indent);
-    if (indent>=0) {
-      out.append('\n');
-      TextUtils.doIndent(out, indent);
-    }
-    out.append("</").append(super.getName()).append('>');    
+  /**
+   * returns the child elements.
+   */
+  public final Iterable<Stringable> getChildren() {
+    return children;
   }
-  /*+******************************************************************/
-  private void printChildren(Appendable out, int indent) throws IOException {
-    for(Stringable child : children) {
-      if (indent>=0) {
-        out.append('\n');
-      }
-      child.print(out, indent+2);
-    }
-  }
-  /*+******************************************************************/
 }

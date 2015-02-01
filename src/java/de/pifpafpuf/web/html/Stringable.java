@@ -6,7 +6,7 @@ import java.io.IOException;
  * describes objects that can append themselves in a readable manner to an
  * {@code Appendable}.
  */
-interface Stringable {
+public interface Stringable {
   /**
    * appends the object's string representation to {@code out}, possibly using
    * an indent of the given number of whitespace characters. Whether and
