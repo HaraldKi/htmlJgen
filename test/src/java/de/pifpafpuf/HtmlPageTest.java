@@ -14,7 +14,7 @@ public class HtmlPageTest {
   @Test
   public void pageBasicTest() throws IOException {
     HtmlPage page = new HtmlPage("a title for the page");
-    String expected = "<!doctype html>\n" +
+    String expected = "<!DOCTYPE html>\n" +
         "<html>\n"+
         "  <head>\n"+
         "    <title>a title for the page</title>\n"+

@@ -8,14 +8,20 @@ import java.util.List;
 import javax.servlet.ServletRequest;
 
 /**
- * <p>describes a single value URL parameter of the given {@code TYPE}. Objects
+ * <p>
+ * describes a single value URL parameter of the given {@code TYPE}. Objects
  * of this class are immutable, but may be used as builders for objects for
  * the same {@code TYPE} but with another value. Objects of this type are
  * used to fetch parameters from the {@link javax.servlet.ServletRequest} as
  * well as to write the parameter with its value into a URL or an HTML form
- * element.</p>
- * <p>Example use of an <code>int</code> parameter.</p>
- * <pre> // define the template
+ * element.
+ * </p>
+ * <p>
+ * Example use of an <code>int</code> parameter.
+ * </p>
+ * 
+ * <pre>
+ * // define the template
  * private static final UrlParam<Integer> P_COUNT =
  *    new UrlParam<Integer>("count", 0, new IntegerCodec(0, 10));
  * ...
@@ -29,9 +35,17 @@ import javax.servlet.ServletRequest;
  * new Html("input").setAttr("type", "text")
  * .setAttr("name", newCount.getName())
  * .setAttr("value", newCount.getForInputParam()));
- * </pre.
+ * </pre
+ * 
+ * .
+ * 
+ * @deprecated The design of combining encoding/decoding of parameters with a
+ *             (default) value proved to be strange in use. Instead use
+ *             {@code static final} {@link UrlParamCodec} objects and provide
+ *             default values on the fly when using its methods.
  * @param <TYPE> is the type of the parameter stored.
  */
+@Deprecated
 public class UrlParam<TYPE> {
   private final String name;
   private final TYPE value;

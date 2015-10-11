@@ -9,7 +9,15 @@ import java.util.Set;
 /**
  * helps to manage url query parameters by retrieving them from a request and
  * by providing them again for a url.
+ * 
+ * @deprecated The idea of a central manager for all URL parameters proved
+ *             not to be too helpful. Rather define {@code static final}
+ *             {@link UrlParamCodec} objects in the servlets that use the
+ *             parameters and access the object in other servlets that
+ *             generate the a parameter of this name and type into a URL or a
+ *             form element.
  */
+@Deprecated
 public class ParamManager {
   
   private final List<UrlParam<?>> params = new LinkedList<UrlParam<?>>();
