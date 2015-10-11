@@ -3,6 +3,12 @@ package de.pifpafpuf.web.urlparam;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * codec for a given <code>enum<code>. The <code>.name()</code> of the enum
+ * values is used for encoding the it.
+ * 
+ * @param <E>
+ */
 public class EnumCodec<E extends Enum<E>>
 implements ParamCodec<E>
 {

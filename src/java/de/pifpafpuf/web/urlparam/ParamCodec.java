@@ -19,8 +19,10 @@ public interface ParamCodec<E> {
   String asString(E e);
 
   /**
-   * decodes the String into a value.
-   * @return {@code null} if the string cannot be properly decoded. 
+   * decodes the String into a value or returns {@code null} if it cannot be
+   * decoded.
+   * 
+   * @return {@code null} if the string cannot be properly decoded.
    */
   E get(String value);
 }

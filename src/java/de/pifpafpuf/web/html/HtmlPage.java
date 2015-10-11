@@ -14,7 +14,14 @@ public class HtmlPage implements Stringable {
     head.addTight("title").addText(title);
   }
   /*+******************************************************************/
-  public void addLink(String type, String href, String rel) {
+  /**
+   * <p>adds a {@code link}-element to the page header with standard attributes
+   * type, href and rel. The element is returned to allow for additional
+   * attributes to be added.</p>
+
+   * @return the generated link element
+   */
+  public EmptyElem addLink(String type, String href, String rel) {
     EmptyElem link = new EmptyElem("link")
     .setAttr("type", type)
     .setAttr("rel", rel)
@@ -22,6 +29,7 @@ public class HtmlPage implements Stringable {
     ;
     
     head.add(link);
+    return link;
   }
   public void addCss(String href) {
     addLink("text/css", href, "stylesheet");
@@ -38,6 +46,9 @@ public class HtmlPage implements Stringable {
     
     head.add(meta);
   }
+  public void addHeadElem(EmptyElem elem) {
+    head.add(elem);
+  }
   /*+******************************************************************/
   public void addContent(EmptyElem content) {
     body.add(content);
@@ -49,7 +60,7 @@ public class HtmlPage implements Stringable {
   /*+******************************************************************/
   @Override
   public void print(Appendable out, int indent) throws IOException {
-    out.append("<!doctype html>\n");
+    out.append("<!DOCTYPE html>\n");
     html.print(out, indent);
   }
   /*+******************************************************************/

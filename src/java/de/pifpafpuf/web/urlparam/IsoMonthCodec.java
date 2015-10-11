@@ -4,6 +4,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+/**
+ * is a codec for verification of strings in the form yyyy-MM, like 2012-09.
+ * For full a full date coded, use {@link DateCodec}.
+ */
 public enum IsoMonthCodec implements ParamCodec<String> {
   INSTANCE;
   
