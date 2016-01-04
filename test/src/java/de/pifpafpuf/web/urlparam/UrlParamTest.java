@@ -13,6 +13,7 @@ public class UrlParamTest {
   private enum E1 {eins, zwei;};
   private enum E2 {drei, vier;};
   
+  @SuppressWarnings("deprecation")
   @Test
   public void urlParamEqualsTest() {
     UrlParam<Integer> p1 = 
@@ -49,6 +50,7 @@ public class UrlParamTest {
     assertFalse(upe1.equals(upe3));
     
   }
+  @SuppressWarnings("deprecation")
   @Test
   public void urlParamHashTest() {
     EnumCodec<E1> ec1 = new EnumCodec<E1>(E1.values());
@@ -61,6 +63,8 @@ public class UrlParamTest {
     upe2 = upe1.fromString("asdfa");
     assertTrue(upe1.hashCode()==upe2.hashCode());    
   }
+
+  @SuppressWarnings("deprecation")
   @Test
   public void exceptionsTest() {
     try {
@@ -77,6 +81,7 @@ public class UrlParamTest {
       assertEquals(NullPointerException.class, e.getClass());
     }
   }
+  @SuppressWarnings("deprecation")
   @Test
   public void toParamTest() {
     UrlParam<Integer> p = 
@@ -91,6 +96,7 @@ public class UrlParamTest {
     assertEquals("12", p.getForInputParam());    
   }
   
+  @SuppressWarnings("deprecation")
   @Test
   public void UrlParamFirstTest() {
     ServletRequestMock req = new ServletRequestMock();
@@ -107,6 +113,8 @@ public class UrlParamTest {
     result = p1.fromFirst(req);
     assertEquals(Integer.valueOf(112), result.getValue());
   }
+
+  @SuppressWarnings("deprecation")
   @Test
   public void UrlParamFirstAll() {
     ServletRequestMock req = new ServletRequestMock();
