@@ -22,6 +22,10 @@ public interface ParamCodec<E> {
    * decodes the String into a value or returns {@code null} if it cannot be
    * decoded.
    * 
+   * @param value may be {@code null} in which case the return value should
+   *        most be {@code null} too, except you know exactly that you want
+   *        to create some special features.
+   * 
    * @return {@code null} if the string cannot be properly decoded.
    */
   E get(String value);
