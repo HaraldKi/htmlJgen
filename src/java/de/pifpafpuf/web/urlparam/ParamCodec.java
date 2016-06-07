@@ -23,8 +23,8 @@ public interface ParamCodec<E> {
    * decoded.
    * 
    * @param value may be {@code null} in which case the return value should
-   *        most be {@code null} too, except you know exactly that you want
-   *        to create some special features.
+   *        most likely be {@code null} too, except you know exactly that you
+   *        want.
    * 
    * @return {@code null} if the string cannot be properly decoded.
    */

@@ -57,16 +57,15 @@ public class UrlParamCodec<TYPE> {
   /*+******************************************************************/
   /**
    * returns the value encoded in string form by the codec defined in the
-   * constructor. No HTML or URL encoding is performed.
+   * constructor.
    */
   public String asString(TYPE value) {
     return paramCodec.asString(value);
   }
+  /*+******************************************************************/
   /**
    * sets the name and the value attribute in the given {@code html} element
    * to reflect this
-   *
-   * @param html
    */
   public void setParam(EmptyElem html, TYPE value) {
     html.setAttr("name", name);
