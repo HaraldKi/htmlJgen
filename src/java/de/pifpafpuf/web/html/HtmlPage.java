@@ -1,6 +1,8 @@
 package de.pifpafpuf.web.html;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * to be used as a root node for an HTML page tree.
@@ -9,6 +11,8 @@ public class HtmlPage implements Stringable {
   private final Html html = new Html("html");
   private final Html head = html.add("head");
   private final Html body = html.add("body");
+  private final List<String> bodyJsUrls = new ArrayList<>(5);
+
   /*+******************************************************************/
   public HtmlPage(String title) {
     head.addTight("title").addText(title);
@@ -34,11 +38,29 @@ public class HtmlPage implements Stringable {
   public void addCss(String href) {
     addLink("text/css", href, "stylesheet");
   }
+
+  /**
+   * add a javascript link to the page head.
+   */
   public void addJs(String url) {
-    head.add("script")
+    addJs(head, url);
+  }
+  
+  private void addJs(Html elem, String url) {
+    elem.add("script")
     .setAttr("type", "text/javascript")
     .setAttr("src", url);
   }
+
+  /**
+   * register a javascript url to be added to the body element just before
+   * calling {@link #print(Appendable)
+   */
+  public void registerBodyJs(String url)
+  {
+    bodyJsUrls.add(url);
+  }
+
   public void addMeta(String name, String content) {
     EmptyElem meta = new EmptyElem("meta")
     .setAttr("name", name)
@@ -60,6 +82,9 @@ public class HtmlPage implements Stringable {
   /*+******************************************************************/
   @Override
   public void print(Appendable out, int indent) throws IOException {
+    for(String url : bodyJsUrls) {
+      addJs(body, url);
+    }
     out.append("<!DOCTYPE html>\n");
     html.print(out, indent);
   }

@@ -18,7 +18,7 @@ public class EmptyElem implements Stringable {
    */
   public EmptyElem(String tagname) {
     this.elemName = tagname;
-    this.attributes = new HashMap<String,String>(2);
+    this.attributes = new HashMap<>(2);
   }
   /*+******************************************************************/
   public final String getName() {

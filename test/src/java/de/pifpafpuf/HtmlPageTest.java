@@ -40,7 +40,7 @@ public class HtmlPageTest {
     assertThat(text, containsString(" href=\"halligalli.css\""));
   }
 
-    @Test
+  @Test
   public void pageJsTest() {
     HtmlPage page = new HtmlPage("bla");
     page.addJs("application.js");
@@ -51,6 +51,14 @@ public class HtmlPageTest {
     assertThat(text, containsString(" src=\"application.js\""));
   }
 
+  @Test
+  public void pageBodyJsTest() {
+    HtmlPage page = new HtmlPage("bla");
+    page.registerBodyJs("some.js");
+    String text = page.toString().replaceAll("[ \r\n]+", "");
+    assertThat(text, containsString("src=\"some.js\"></script></body></html>"));       
+  }
+  
   @Test 
   public void pageBodyTest() {
     HtmlPage page = new HtmlPage("bla");
