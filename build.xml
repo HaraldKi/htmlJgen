@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="htmlJgen" default="jar">
 
-  <property name="version" value="1.5.2"/>
-
-
-  <!-- 
-       Run 'ant ivy' first to download dependencies.
-
-       If you don't have ivy, you need to manually get a servlet-api-3*.jar 
-       somewhere to compile. Copy it into libs/build. For example from here:
-       http://central.maven.org/maven2/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar
-  -->
+  <property name="version" value="2.0"/>
 
   <!-- Set cobertura.libdir in your .ant.properties file. If you don't
        want to run the test coverage, you don't need this.

@@ -84,35 +84,35 @@ public class UrlParamCodecTest {
 
   @Test
   public void UrlParamFirstTest() {
-    ServletRequestMock req = new ServletRequestMock();
+    ParameterStore req = new ParameterStore();
     UrlParamCodec<Integer> p1 =
         new UrlParamCodec<Integer>("dodo", IntegerCodec.INSTANCE);
-    int result = p1.fromFirst(req, 42);
+    int result = p1.fromFirst(req::getParameterValues, Integer.valueOf(42)).intValue();
     assertEquals(42, result);
 
     req.setParameter("dodo", "one", "two", "three");
-    result = p1.fromFirst(req, 42);
+    result = p1.fromFirst(req::getParameterValues, 42);
     assertEquals(42, result);
 
     req.setParameter("dodo", "112");
-    result = p1.fromFirst(req, 42);
+    result = p1.fromFirst(req::getParameterValues, 42);
     assertEquals(112, result);
   }
   @Test
   public void UrlParamFirstAll() {
-    ServletRequestMock req = new ServletRequestMock();
+    ParameterStore req = new ParameterStore();
     UrlParamCodec<Integer> p1 =
         new UrlParamCodec<Integer>("dodo",IntegerCodec.INSTANCE);
-    List<Integer> result = p1.fromAll(req);
+    List<Integer> result = p1.fromAll(req::getParameterValues);
     assertEquals(0, result.size());
 
     req.setParameter("dodo", "1", "two", "3");
-    result = p1.fromAll(req);
+    result = p1.fromAll(req::getParameterValues);
     assertEquals(2, result.size());
     assertEquals(Integer.valueOf(1), result.get(0));
 
     req.setParameter("dodo", "112", "113");
-    result = p1.fromAll(req);
+    result = p1.fromAll(req::getParameterValues);
     assertEquals(Integer.valueOf(112), result.get(0));
     assertEquals(Integer.valueOf(113), result.get(1));
   }

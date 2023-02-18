@@ -1,15 +1,13 @@
 package de.pifpafpuf.web.urlparam;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.servlet.ServletRequest;
+import java.util.function.Function;
 
 import de.pifpafpuf.web.html.EmptyElem;
-import de.pifpafpuf.web.urlparam.ParamCodec;
 
 /**
  * <p>
@@ -17,7 +15,7 @@ import de.pifpafpuf.web.urlparam.ParamCodec;
  * and for HTML forms and links.</p>
  *
  * <p>Objects of this class are immutable. They are used to fetch parameters
- * from the {@link javax.servlet.ServletRequest} as well as to write the
+ * from with functions provided as well as to write the
  * parameter with its value into a URL or an HTML form element.
  * </p>
  *
@@ -35,7 +33,7 @@ public class UrlParamCodec<TYPE> {
    *        whether the name conforms to the syntax rules of URL parameter
    *        names and no encoding/decoding is performed for the name.
    * @param codec is the codec to decode strings retrieved from
-   *        {@link javax.servlet.ServletRequest} and to encode the value for
+   *        from mappings provided and to encode the value for
    *        a URL or an HTML form input element. The codec should only
    *        encode/decode to/from an arbitrary <code>String</code> URL
    *        en/decoding is taken care of by {@code this}.
@@ -82,7 +80,7 @@ public class UrlParamCodec<TYPE> {
   /*+**********************************************************************/
   /**
    * appends the encoded {@code value} to the
-   * {@link java.util.StringBuilder} provided. If the URL provided does not
+   * {@link java.lang.StringBuilder} provided. If the URL provided does not
    * end with a '?', the parameter is prefixed with '&'.
    */
   public void appendToUrl(StringBuilder sb, TYPE value) {
@@ -112,15 +110,23 @@ public class UrlParamCodec<TYPE> {
   /**
    * <p>
    * creates a {@code TYPE} from the value returned by
-   * <code>req.getParameter</code> by calling {@link #fromString}.
+   * the given function by calling {@link #fromString}.
    * </p>
    *
    * @param req where to get the parameter value from, may not be
    *        <code>null</code>
    */
-  public TYPE fromFirst(ServletRequest req, TYPE defaultValue) {
-    String text = req.getParameter(name);
+  public TYPE fromFirst(Function<String, List<String>>  req, TYPE defaultValue) {
+    List<String> values = req.apply(name);
+    String text = values != null && values.size() > 0 ? values.get(0) : null;
     return fromString(text, defaultValue);
+  }
+
+  @Deprecated
+  public TYPE fromFirstP(Function<String, String>  req, TYPE defaultValue) {
+    throw new UnsupportedOperationException(
+        "Method only exists to be able to compile"
+        + " Einkaufsliste before removing jetty completely.");
   }
   /*+******************************************************************/
   /**
@@ -137,12 +143,12 @@ public class UrlParamCodec<TYPE> {
    * @param req where to get the parameter values from, may not be
    *        <code>null</code>
    */
-  public List<TYPE> fromAll(ServletRequest req) {
-    String[] values = req.getParameterValues(name);
+  public List<TYPE> fromAll(Function<String, List<String>> req) {
+    List<String> values = req.apply(name);
     if (values==null) {
       return new LinkedList<TYPE>();
     }
-    List<TYPE> result = new ArrayList<TYPE>(values.length);
+    List<TYPE> result = new ArrayList<TYPE>(values.size());
     for(String value : values) {
       TYPE v = fromString(value, null);
       if (v!=null) {
@@ -160,12 +166,7 @@ public class UrlParamCodec<TYPE> {
   // right? Caveat: I would like to not introduce a dependency to Spring or
   // some Apache library.
   private static String encodeForUrl(String text) {
-    try {
-      return URLEncoder.encode(text, "UTF-8");
-    } catch (UnsupportedEncodingException e) {
-      throw new RuntimeException("this should not happen, "+
-          "why don't we have UTF-8?", e);
-    }
+    return URLEncoder.encode(text, StandardCharsets.UTF_8);
   }
   /*+******************************************************************/
   @Override
@@ -195,11 +196,7 @@ public class UrlParamCodec<TYPE> {
       return false;
     }
 
-    if (!paramCodec.equals(other.paramCodec)) {
-      return false;
-    }
-
-    return true;
+    return paramCodec.equals(other.paramCodec);
   }
   /*+******************************************************************/
   @Override
